@@ -1,0 +1,933 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ */
+/* Tokens                                                             */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem; /* tablet: 768px */
+  --breakpoint-lg: 64.0625rem; /* desktop: acima de 1024px */
+  --breakpoint-xl: 80rem;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-bronze: var(--bronze);
+  --color-silver: var(--silver);
+  --color-gold: var(--gold);
+  --color-on-gold: var(--on-gold);
+  --color-success: var(--success);
+  --color-layer: var(--layer);
+  --color-bronze-ink: var(--bronze-ink);
+  --color-silver-ink: var(--silver-ink);
+  --color-gold-ink: var(--gold-ink);
+  --color-success-ink: var(--success-ink);
+  --color-layer-ink: var(--layer-ink);
+  --color-output: var(--output);
+  --color-output-ink: var(--output-ink);
+
+  --shadow-card: var(--card-shadow);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--layer) 40%, transparent),
+    0 0 32px -8px color-mix(in srgb, var(--layer) 50%, transparent);
+}
+
+/* A cor da camada ativa é uma propriedade registrada para poder ter transição. */
+@property --layer {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f0b94a;
+}
+/* Ângulo do feixe de luz da borda da certificação. */
+@property --beam {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --layer-ink {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f0b94a;
+}
+
+:root {
+  /* Espaçamento (px): xs 4 · sm 8 · md 16 · lg 24 · xl 40 · 2xl 64 · 3xl 112 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 112px;
+
+  --dur-fast: 150ms;
+  --dur-base: 280ms;
+  --dur-slow: 600ms;
+
+  --header-h: 64px;
+
+  /* Tema escuro (padrão) */
+  --bg: #0b0d10;
+  --surface: #12161c;
+  --surface-2: #181d25;
+  --border: #232a35;
+  --text: #e8eaed;
+  --text-muted: #8a94a3;
+  /* Cada cor de destaque tem dois tons: o cheio (fundos, bordas, brilhos) e o
+     "ink" (texto e ícones). No escuro os dois são iguais. */
+  --bronze: #c8875a;
+  --silver: #b9c3ce;
+  --gold: #f0b94a;
+  --success: #4ade80;
+  --output: #7c3aed; /* roxo da aba de contato, o fim do pipeline */
+  --output-ink: #9b7cf6;
+  --bronze-ink: var(--bronze);
+  --silver-ink: var(--silver);
+  --gold-ink: var(--gold);
+  --success-ink: var(--success);
+  --on-gold: #0b0d10;
+  --gold-hover: #f3c462;
+  --shadow-color: rgb(0 0 0 / 0.6);
+  --card-shadow: 0 1px 0 var(--border) inset, 0 20px 40px -24px var(--shadow-color);
+  --grid-line: rgb(232 234 237 / 0.06);
+  --glow-strength: 14%;
+  --tint: 12%; /* quanto da cor entra em fundos tingidos */
+  --spot: 9%; /* força da luz que segue o mouse nos cards */
+  --node-rest: 0%; /* tinta dos nós inativos do pipeline */
+  --node-rest-border: 0%;
+  --pipe-opacity: 0.45;
+  color-scheme: dark;
+}
+
+/* Tema claro. Os tons cheios mantêm a cor viva das medalhas; os tons "ink" são
+   versões escuras que passam no contraste AA (4.5:1) sobre bg, surface e surface-2. */
+:root[data-theme='light'] {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-2: #efede8;
+  --border: #dedad2;
+  --text: #15181d;
+  --text-muted: #5d6673;
+  --bronze: #c26a34;
+  --silver: #7b8ca0;
+  --gold: #eba91c;
+  --success: #1e9e55;
+  --bronze-ink: #98501f;
+  --silver-ink: #4f6072;
+  --gold-ink: #855a00;
+  --success-ink: #137638;
+  --output: #5b21b6;
+  --output-ink: #5b21b6;
+  --on-gold: #1b1400;
+  --gold-hover: #f4b93a;
+  --shadow-color: rgb(21 24 29 / 0.16);
+  --card-shadow: 0 1px 2px rgb(21 24 29 / 0.05), 0 16px 32px -20px var(--shadow-color);
+  --grid-line: rgb(21 24 29 / 0.055);
+  --glow-strength: 20%;
+  --tint: 16%;
+  --spot: 10%;
+  --node-rest: 9%;
+  --node-rest-border: 40%;
+  --pipe-opacity: 0.8;
+  color-scheme: light;
+}
+
+/* Sem JavaScript não há data-theme: vale a preferência do sistema. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface-2: #efede8;
+    --border: #dedad2;
+    --text: #15181d;
+    --text-muted: #5d6673;
+    --bronze: #c26a34;
+    --silver: #7b8ca0;
+    --gold: #eba91c;
+    --success: #1e9e55;
+    --bronze-ink: #98501f;
+    --silver-ink: #4f6072;
+    --gold-ink: #855a00;
+    --success-ink: #137638;
+    --output: #5b21b6;
+    --output-ink: #5b21b6;
+    --on-gold: #1b1400;
+    --gold-hover: #f4b93a;
+    --shadow-color: rgb(21 24 29 / 0.16);
+    --card-shadow: 0 1px 2px rgb(21 24 29 / 0.05), 0 16px 32px -20px var(--shadow-color);
+    --grid-line: rgb(21 24 29 / 0.055);
+    --glow-strength: 20%;
+    --tint: 16%;
+    --spot: 10%;
+    --node-rest: 9%;
+    --node-rest-border: 40%;
+    --pipe-opacity: 0.8;
+    color-scheme: light;
+  }
+}
+
+html {
+  overflow-x: clip;
+  --layer: var(--gold);
+  --layer-ink: var(--gold-ink);
+  transition:
+    --layer var(--dur-slow) var(--ease-out),
+    --layer-ink var(--dur-slow) var(--ease-out);
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+html[data-tab='bronze'] {
+  --layer: var(--bronze);
+  --layer-ink: var(--bronze-ink);
+}
+html[data-tab='silver'] {
+  --layer: var(--silver);
+  --layer-ink: var(--silver-ink);
+}
+html[data-tab='gold'] {
+  --layer: var(--gold);
+  --layer-ink: var(--gold-ink);
+}
+html[data-tab='contato'] {
+  --layer: var(--output);
+  --layer-ink: var(--output-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                               */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  body {
+    min-width: 320px;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  @media (min-width: 64.0625rem) {
+    body {
+      font-size: 1.0625rem;
+    }
+  }
+
+  /* Grid sutil de 48px e brilho radial da camada ativa atrás do conteúdo. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        70% 55% at 50% 0%,
+        color-mix(in srgb, var(--layer) var(--glow-strength), transparent),
+        transparent 70%
+      ),
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      48px 48px,
+      48px 48px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold-ink);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--gold) 35%, transparent);
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Componentes                                                        */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 48rem) {
+    .container-page {
+      padding-inline: 24px;
+    }
+  }
+  @media (min-width: 64.0625rem) {
+    .container-page {
+      max-width: 1200px; /* 1120 de conteúdo + 40 de gutter de cada lado */
+      padding-inline: 40px;
+    }
+  }
+
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .text-h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .text-h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  .text-small {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .label-mono {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: var(--radius-full, 999px);
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--on-gold);
+  }
+  .btn-primary:hover {
+    background: var(--gold-hover);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-secondary {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold-ink);
+  }
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 999px;
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+  }
+  /* Luz na cor da camada que acompanha o mouse (--mx/--my vêm do App.tsx). */
+  @media (hover: hover) and (pointer: fine) {
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(
+        280px circle at var(--mx, 50%) var(--my, 0px),
+        color-mix(in srgb, var(--layer) var(--spot), transparent),
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    .card:hover::after {
+      opacity: 1;
+    }
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    text-align: left;
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out);
+  }
+  .chip:hover {
+    border-color: var(--layer);
+    background: var(--surface-2);
+  }
+  button.chip {
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  button.chip:hover {
+    transform: translateY(-1px);
+  }
+  button.chip:active {
+    transform: scale(0.98);
+  }
+  /* Chip só informativo: sem reação ao mouse. */
+  .chip-static:hover {
+    border-color: var(--border);
+    background: var(--surface);
+  }
+  .chip[aria-pressed='true'] {
+    border-color: var(--layer);
+    color: var(--layer-ink);
+    background: color-mix(in srgb, var(--layer) var(--tint), var(--surface));
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .link {
+    color: var(--gold-ink);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--gold) 70%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out);
+  }
+  .link:hover {
+    text-decoration-color: var(--gold-ink);
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus {
+    transform: none;
+  }
+
+  /* Nota de privacidade do rodapé */
+  .privacy > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .privacy > summary::-webkit-details-marker {
+    display: none;
+  }
+  .privacy > summary:hover,
+  .privacy[open] > summary {
+    color: var(--text);
+  }
+  .privacy[open] > summary .privacy-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Card com destaque da camada ao passar o mouse */
+  .card-hover {
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+  }
+  .card-hover:hover,
+  .card-hover:focus-within {
+    border-color: var(--layer);
+    box-shadow: var(--shadow-card), var(--shadow-glow);
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Setas que andam um pouco quando o link ou botão recebe o mouse. */
+  .nudge-x,
+  .nudge-up {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  a:hover > .nudge-x,
+  button:hover > .nudge-x {
+    transform: translateX(3px);
+  }
+  a:hover > .nudge-up {
+    transform: translate(2px, -2px);
+  }
+
+  /* Badges: a imagem cresce um pouco com o mouse em cima do card. */
+  .badge-card img,
+  .cert-card img {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .badge-card:hover img,
+  .cert-card:hover img {
+    transform: scale(1.06) rotate(-2deg);
+  }
+
+  /* Certificação em destaque: um feixe de luz da camada percorre a borda. */
+  .cert-card {
+    border-color: color-mix(in srgb, var(--layer) 60%, var(--border));
+  }
+  @supports (background: conic-gradient(from var(--beam), red, blue)) {
+    .cert-card {
+      border-color: transparent;
+      background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        conic-gradient(
+            from var(--beam),
+            color-mix(in srgb, var(--layer) 45%, var(--border)) 0deg,
+            var(--layer) 40deg,
+            color-mix(in srgb, var(--layer) 45%, var(--border)) 90deg,
+            color-mix(in srgb, var(--layer) 45%, var(--border)) 360deg
+          )
+          border-box;
+      animation: beam 7s linear infinite;
+    }
+  }
+
+  /* Skeleton de imagem */
+  .skeleton {
+    background: linear-gradient(
+        100deg,
+        transparent 30%,
+        color-mix(in srgb, var(--text) 7%, transparent) 50%,
+        transparent 70%
+      )
+      var(--surface-2);
+    background-size:
+      200% 100%,
+      auto;
+    animation: shimmer 1.4s linear infinite;
+  }
+}
+
+/* Imagem que aparece com fade ao carregar. Sem JS ela fica sempre visível. */
+html.js .img-fade {
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+html.js .img-fade.is-loaded {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Abas: visibilidade antes da hidratação e sem JavaScript            */
+/* ------------------------------------------------------------------ */
+
+/* Sem JS, todas as seções aparecem empilhadas. Com JS, antes de o React
+   assumir, só a aba do hash fica visível (evita piscar o conteúdo todo). */
+html.js:not(.hydrated) .panel {
+  display: none;
+}
+html.js:not(.hydrated)[data-tab='bronze'] #bronze,
+html.js:not(.hydrated)[data-tab='silver'] #silver,
+html.js:not(.hydrated)[data-tab='gold'] #gold,
+html.js:not(.hydrated)[data-tab='contato'] #contato {
+  display: block;
+}
+html:not(.js) .panel + .panel {
+  margin-top: var(--space-2xl);
+}
+html.lang-pending #root {
+  visibility: hidden;
+}
+html:not(.js) .js-only {
+  display: none !important;
+}
+
+/* No desktop a barra de abas acompanha a rolagem, desde que a tela tenha altura para isso. */
+@media (min-width: 48rem) and (min-height: 52rem) {
+  .pipeline-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+  }
+}
+
+/* Nó do pipeline */
+.node {
+  --node: var(--gold);
+  --node-ink: var(--gold-ink);
+  color: var(--text-muted);
+  transition: color var(--dur-base) var(--ease-out);
+}
+.node:hover {
+  color: color-mix(in srgb, var(--node-ink) 60%, var(--text-muted));
+}
+/* No desktop cada nó já carrega um pouco da cor da sua camada. */
+@media (min-width: 48rem) {
+  .node-dot {
+    background: color-mix(in srgb, var(--node) var(--node-rest), var(--surface));
+    border-color: color-mix(in srgb, var(--node) var(--node-rest-border), var(--border));
+  }
+}
+.node-dot {
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out);
+}
+html[data-tab='bronze'] #tab-bronze,
+html[data-tab='silver'] #tab-silver,
+html[data-tab='gold'] #tab-gold,
+html[data-tab='contato'] #tab-contato {
+  color: var(--node-ink);
+}
+html[data-tab='bronze'] #tab-bronze .node-dot,
+html[data-tab='silver'] #tab-silver .node-dot,
+html[data-tab='gold'] #tab-gold .node-dot,
+html[data-tab='contato'] #tab-contato .node-dot {
+  border-color: var(--node);
+  background: color-mix(in srgb, var(--node) var(--tint), var(--surface));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--node) 40%, transparent),
+    0 0 32px -8px color-mix(in srgb, var(--node) 50%, transparent);
+}
+html[data-tab='bronze'] #tab-bronze .node-label,
+html[data-tab='silver'] #tab-silver .node-label,
+html[data-tab='gold'] #tab-gold .node-label,
+html[data-tab='contato'] #tab-contato .node-label {
+  color: var(--text);
+}
+
+/* Barra de progresso de rolagem, colada no topo do header. */
+.scroll-progress {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--layer);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Trecho do cano já percorrido: acende do primeiro nó até a aba ativa. */
+.pipe-fill {
+  position: absolute;
+  top: 50%;
+  left: 12.5%;
+  width: 75%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--bronze), var(--silver) 33.3%, var(--gold) 66.7%, var(--output));
+  clip-path: inset(-4px 100% -4px 0);
+  transition: clip-path 500ms var(--ease-in-out);
+}
+html[data-tab='silver'] .pipe-fill {
+  clip-path: inset(-4px 66.7% -4px 0);
+}
+html[data-tab='gold'] .pipe-fill {
+  clip-path: inset(-4px 33.3% -4px 0);
+}
+html[data-tab='contato'] .pipe-fill {
+  clip-path: inset(-4px 0 -4px 0);
+}
+
+/* Linha do tempo: cada trecho se pinta conforme a rolagem passa por ele.
+   Sem suporte a animações por rolagem, a linha já aparece pintada. */
+.timeline-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: var(--bronze);
+  transform-origin: top;
+}
+@supports (animation-timeline: view()) {
+  .timeline-fill {
+    animation: timeline-grow linear both;
+    animation-timeline: view();
+    animation-range: entry 15% cover 45%;
+  }
+}
+@keyframes timeline-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes beam {
+  to {
+    --beam: 360deg;
+  }
+}
+
+/* Troca de tema: o tema novo se abre em círculo (a animação é disparada no app.tsx). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Partículas em repouso: dado passando devagar pelo cano */
+.pipe-idle {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 999px;
+  background: var(--layer);
+  opacity: 0;
+  animation: pipe-flow 16s linear infinite;
+}
+@keyframes pipe-flow {
+  0% {
+    left: 12.5%;
+    opacity: 0;
+  }
+  6%,
+  94% {
+    opacity: 0.55;
+  }
+  100% {
+    left: 87.5%;
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                               */
+/* ------------------------------------------------------------------ */
+
+/* O nome fica sempre em uma linha: o tamanho acompanha a largura disponível
+   (a tela toda no celular; a coluna ao lado da foto do tablet em diante). */
+.hero-name {
+  position: relative;
+  white-space: nowrap;
+  font-size: clamp(1.625rem, 9.4vw, 4.5rem);
+}
+@media (min-width: 48rem) {
+  .hero-name {
+    font-size: calc((100vw - 310px) / 9.3);
+  }
+}
+@media (min-width: 64.0625rem) {
+  .hero-name {
+    font-size: min(calc((100vw - 400px) / 9.3), 4.75rem);
+  }
+}
+.name-scramble {
+  display: none;
+  position: absolute;
+  inset: 0;
+  color: var(--bronze);
+}
+/* Antes de o React assumir, o nome já aparece "bruto". */
+html.intro .name-final {
+  visibility: hidden;
+}
+html.intro .name-scramble {
+  display: block;
+}
+html.intro .name-scramble:empty::after {
+  content: attr(data-seed);
+}
+.name-scramble .done {
+  color: var(--text);
+}
+
+.hero-log {
+  animation: hero-log 1000ms var(--ease-out) both;
+}
+@keyframes hero-log {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  25%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.photo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: conic-gradient(from 0deg, var(--bronze), var(--silver), var(--gold), var(--bronze));
+  animation: spin 20s linear infinite;
+}
+
+.bob {
+  animation: bob 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position:
+      200% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      -200% 0,
+      0 0;
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Movimento reduzido: sem decodificação, partículas, tilt nem rotação. */
+/* As transições viram só um fade de 150ms.                            */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: 150ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow, visibility !important;
+  }
+  .pipe-idle,
+  .hero-log {
+    display: none !important;
+  }
+  .btn-primary:hover,
+  .btn-primary:active,
+  .btn-secondary:active,
+  button.chip:hover,
+  button.chip:active,
+  .card-hover:hover,
+  a:hover > .nudge-x,
+  button:hover > .nudge-x,
+  a:hover > .nudge-up,
+  .badge-card:hover img,
+  .cert-card:hover img {
+    transform: none;
+  }
+  .timeline-fill {
+    transform: none;
+  }
+}

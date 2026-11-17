@@ -1,0 +1,304 @@
+/* Currículo: folha A4 branca, sem animação. Na tela, a folha aparece centralizada. */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: #e9e7e2;
+  color: #15181d;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 9.2pt;
+  line-height: 1.42;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Barra de ações (só na tela) */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+.toolbar a,
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid #c9c4ba;
+  border-radius: 999px;
+  background: #fff;
+  color: #15181d;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.toolbar a:first-child {
+  border-color: transparent;
+  background: transparent;
+  padding-left: 0;
+}
+.toolbar .primary {
+  border-color: #7a5300;
+  background: #7a5300;
+  color: #fff;
+}
+.toolbar a:focus-visible,
+.toolbar button:focus-visible {
+  outline: 2px solid #7a5300;
+  outline-offset: 3px;
+}
+html:not(.js) .js-only {
+  display: none;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 32px;
+  padding: 12mm 13mm;
+  background: #fff;
+  box-shadow: 0 10px 40px -20px rgb(0 0 0 / 0.35);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 5mm;
+  padding-bottom: 5mm;
+  border-bottom: 1.5pt solid #15181d;
+}
+.top img {
+  width: 19mm;
+  height: 19mm;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.who {
+  flex: 1;
+  min-width: 0;
+}
+h1 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 23pt;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.headline {
+  margin-top: 1.5mm;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8pt;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a5300;
+}
+.contacts {
+  flex: none;
+  text-align: right;
+  font-size: 8.4pt;
+  line-height: 1.5;
+  color: #3c444f;
+}
+
+.summary {
+  margin-top: 4.5mm;
+  font-size: 9.6pt;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58mm;
+  gap: 8mm;
+  margin-top: 5mm;
+}
+
+section + section {
+  margin-top: 4.4mm;
+}
+h2 {
+  margin-bottom: 2.2mm;
+  padding-bottom: 1mm;
+  border-bottom: 0.5pt solid #c9c4ba;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7.6pt;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a5300;
+}
+h3 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 10.2pt;
+  font-weight: 600;
+  line-height: 1.25;
+}
+article + article {
+  margin-top: 3.6mm;
+}
+article p {
+  margin-top: 1.2mm;
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4mm;
+}
+.note {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: #5d6673;
+}
+.period {
+  flex: none;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7.6pt;
+  color: #5d6673;
+  white-space: nowrap;
+}
+.sub {
+  font-weight: 600;
+}
+.bullets {
+  margin-top: 0.8mm;
+  padding-left: 3.6mm;
+  list-style: disc;
+}
+.bullets li + li {
+  margin-top: 0.5mm;
+}
+.tags {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7.4pt;
+  color: #5d6673;
+}
+
+.certs {
+  padding-left: 3.6mm;
+  list-style: disc;
+}
+.certs li + li {
+  margin-top: 0.5mm;
+}
+.certs + .tags {
+  margin-top: 1.2mm;
+}
+
+.side .group + .group {
+  margin-top: 1.7mm;
+}
+.side h3 {
+  font-size: 9.2pt;
+}
+.plain li + li {
+  margin-top: 1mm;
+}
+.side a {
+  word-break: break-all;
+  color: #3c444f;
+}
+
+/* Telas estreitas: uma coluna só */
+@media screen and (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  .sheet {
+    min-height: 0;
+    padding: 24px 16px;
+  }
+  .top {
+    flex-wrap: wrap;
+  }
+  .contacts {
+    flex-basis: 100%;
+    text-align: left;
+    font-size: 13px;
+  }
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  h1 {
+    font-size: 30px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  .side h3 {
+    font-size: 15px;
+  }
+  .summary {
+    font-size: 15px;
+  }
+  .headline,
+  h2,
+  .period,
+  .tags {
+    font-size: 12px;
+  }
+  .row {
+    flex-wrap: wrap;
+    gap: 0 12px;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .toolbar {
+    display: none;
+  }
+  .sheet {
+    width: 210mm;
+    max-width: none;
+    height: 297mm;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    box-shadow: none;
+  }
+}
