@@ -61,7 +61,6 @@ export const skillBase: SharedSkill[] = [
   { id: 'html', name: 'HTML5', icon: 'html', group: 'languages' },
   { id: 'css', name: 'CSS', icon: 'css', group: 'languages' },
 
-  { id: 'scikitlearn', name: 'scikit-learn', icon: 'scikitlearn', group: 'ml' },
   { id: 'pandas', name: 'Pandas', icon: 'pandas', group: 'ml' },
   { id: 'numpy', name: 'NumPy', icon: 'numpy', group: 'ml' },
   { id: 'mlflow', name: 'MLflow', icon: 'mlflow', group: 'ml' },

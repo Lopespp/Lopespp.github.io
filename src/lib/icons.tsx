@@ -42,7 +42,6 @@ import {
   siNumpy,
   siPandas,
   siPython,
-  siScikitlearn,
 } from 'simple-icons';
 
 /**
@@ -63,7 +62,6 @@ const brands: Record<string, string> = {
   githubactions: siGithubactions.path,
   node: siNodedotjs.path,
   mediapipe: siMediapipe.path,
-  scikitlearn: siScikitlearn.path,
   pandas: siPandas.path,
   numpy: siNumpy.path,
   mlflow: siMlflow.path,
