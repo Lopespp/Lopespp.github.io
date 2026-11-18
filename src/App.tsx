@@ -19,7 +19,7 @@ const SummaryCard = lazy(() => import('./components/SummaryCard'));
 const Terminal = lazy(() => import('./components/Terminal'));
 const HandMode = lazy(() => import('./components/HandMode'));
 
-/** Atalho `~` do terminal, título de "volta aqui" e recado no console. */
+/** Atalho `~` do terminal, luz dos cards e recado no console. */
 function useSmallDetails() {
   const { t, overlay, openOverlay } = useApp();
 
@@ -40,14 +40,6 @@ function useSmallDetails() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [overlay, openOverlay]);
-
-  useEffect(() => {
-    const onVisibility = () => {
-      document.title = document.hidden ? t.meta.awayTitle : t.meta.title;
-    };
-    document.addEventListener('visibilitychange', onVisibility);
-    return () => document.removeEventListener('visibilitychange', onVisibility);
-  }, [t]);
 
   // Luz que acompanha o mouse sobre os cards (só com mouse; o CSS cuida do resto).
   useEffect(() => {

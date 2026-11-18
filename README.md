@@ -1,4 +1,4 @@
-# Meu site pessoal
+# Site pessoal de Pietro Lopes Ramos
 
 Site-currículo em uma página só, hospedado no GitHub Pages: <https://lopespp.github.io>.
 

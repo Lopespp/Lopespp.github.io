@@ -102,8 +102,6 @@ export interface Content {
     description: string;
     ogTagline: string;
     jobTitle: string;
-    /** Título da aba do navegador quando o visitante troca de aba. */
-    awayTitle: string;
     consoleMessage: string;
   };
   ui: {

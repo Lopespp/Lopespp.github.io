@@ -12,7 +12,6 @@ export const en: Content = {
       'Data Engineering Intern at Programmers and Information Systems student at Uniara. Databricks, Python, SQL and PySpark.',
     ogTagline: 'Data Engineering · Databricks · Python · SQL',
     jobTitle: 'Data Engineering Intern',
-    awayTitle: '👋 Come back!',
     consoleMessage: 'Source code for this site and other projects:',
   },
 
@@ -37,7 +36,7 @@ export const en: Content = {
       '[gold] publish profile … ok',
     ],
     subtitle: 'Data Engineering Intern at Programmers and Information Systems student at Uniara.',
-    personal: 'I work in Databricks with pipelines, jobs, notebooks and ML models.',
+    personal: 'I work with Databricks: pipelines, jobs, notebooks and ML models.',
     ctaProjects: 'See projects',
     ctaContact: 'Get in touch',
     photoAlt: 'Photo of Pietro Lopes Ramos',
@@ -82,7 +81,7 @@ export const en: Content = {
     title: 'Who I am',
     bio: [
       "I'm a Data Engineering Intern at **Programmers** and an Information Systems student at **Uniara**, in Matão, Brazil.",
-      "I started coding during the pandemic, with JavaScript and Python. In 2026 I moved into data through the Programmers internship program and never left. Today my work happens in Databricks: pipelines, jobs, notebooks and ML models, with the results landing in Power BI dashboards. I've also worked with Microsoft Fabric and Google Cloud.",
+      "I started coding during the pandemic, with JavaScript and Python. In 2026 I moved into data through the Programmers internship program and never left. Today I work with Databricks: pipelines, jobs, notebooks and ML models, with the results landing in Power BI dashboards. I've also worked with Microsoft Fabric and Google Cloud.",
       'My background is software development: programming logic, APIs and databases, which I now apply to building data solutions. I hold the **Databricks Certified Data Engineer Associate** certification and speak English fluently (C1 certified).',
     ],
     timelineTitle: 'Timeline',

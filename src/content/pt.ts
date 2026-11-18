@@ -12,7 +12,6 @@ export const pt: Content = {
       'Estagiário de Engenharia de Dados na Programmers e estudante de Sistemas de Informação na Uniara. Databricks, Python, SQL e PySpark.',
     ogTagline: 'Engenharia de Dados · Databricks · Python · SQL',
     jobTitle: 'Estagiário de Engenharia de Dados',
-    awayTitle: '👋 Volta aqui!',
     consoleMessage: 'Código-fonte deste site e de outros projetos:',
   },
 
@@ -38,7 +37,7 @@ export const pt: Content = {
     ],
     subtitle:
       'Estagiário de Engenharia de Dados na Programmers e estudante de Sistemas de Informação na Uniara.',
-    personal: 'Trabalho no Databricks com pipelines, jobs, notebooks e modelos de ML.',
+    personal: 'Trabalho com Databricks: pipelines, jobs, notebooks e modelos de ML.',
     ctaProjects: 'Ver projetos',
     ctaContact: 'Falar comigo',
     photoAlt: 'Foto de Pietro Lopes Ramos',
@@ -83,7 +82,7 @@ export const pt: Content = {
     title: 'Quem sou',
     bio: [
       'Sou estagiário de Engenharia de Dados na **Programmers** e estudo Sistemas de Informação na **Uniara**, em Matão (SP).',
-      'Comecei a programar na pandemia, com JavaScript e Python. Em 2026 entrei para a área de dados pelo programa de estágio da Programmers e não saí mais. Hoje meu trabalho é no Databricks: pipelines, jobs, notebooks e modelos de ML, com o resultado chegando em dashboards no Power BI. Também já trabalhei com Microsoft Fabric e Google Cloud.',
+      'Comecei a programar na pandemia, com JavaScript e Python. Em 2026 entrei para a área de dados pelo programa de estágio da Programmers e não saí mais. Hoje trabalho com Databricks: pipelines, jobs, notebooks e modelos de ML, com o resultado chegando em dashboards no Power BI. Também já trabalhei com Microsoft Fabric e Google Cloud.',
       'Minha base é desenvolvimento de software: lógica de programação, APIs e bancos de dados, que hoje aplico na construção de soluções de dados. Tenho a certificação **Databricks Certified Data Engineer Associate** e falo inglês com fluência (certificado C1).',
     ],
     timelineTitle: 'Trajetória',
